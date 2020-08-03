@@ -24,11 +24,11 @@ namespace TrainingLogger.API.Data
             return user;
         }
 
-        private bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt) 
+        private bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
         {
             using var hmac = new System.Security.Cryptography.HMACSHA512(passwordSalt);
             var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-            for (int i = 0; i< computedHash.Length; i++) 
+            for (int i = 0; i < computedHash.Length; i++)
             {
                 if (computedHash[i] != passwordHash[i]) return false;
             }
@@ -39,7 +39,7 @@ namespace TrainingLogger.API.Data
         {
             byte[] passwordHash, passwordSalt;
             CreatePasswordHash(password, out passwordHash, out passwordSalt);
-            
+
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
             user.Created = DateTime.Now;
@@ -50,7 +50,7 @@ namespace TrainingLogger.API.Data
             return user;
         }
 
-        private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt) 
+        private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
             using var hmac = new System.Security.Cryptography.HMACSHA512();
             passwordSalt = hmac.Key;
@@ -59,7 +59,7 @@ namespace TrainingLogger.API.Data
 
         public async Task<bool> UserExists(string username)
         {
-            if (await _context.Users.AnyAsync(x => x.Username == username)) 
+            if (await _context.Users.AnyAsync(x => x.Username == username))
             {
                 return true;
             }

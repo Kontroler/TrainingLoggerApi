@@ -3,10 +3,23 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TrainingLogger.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Units",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Code = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Units", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
@@ -59,35 +72,6 @@ namespace TrainingLogger.Migrations
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Units",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Created = table.Column<DateTime>(nullable: false),
-                    LastUpdated = table.Column<DateTime>(nullable: false),
-                    CreatedById = table.Column<int>(nullable: false),
-                    LastUpdatedById = table.Column<int>(nullable: false),
-                    Code = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Units", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Units_Users_CreatedById",
-                        column: x => x.CreatedById,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Units_Users_LastUpdatedById",
-                        column: x => x.LastUpdatedById,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -254,6 +238,16 @@ namespace TrainingLogger.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.InsertData(
+                table: "Units",
+                columns: new[] { "Id", "Code" },
+                values: new object[] { 1, "kg" });
+
+            migrationBuilder.InsertData(
+                table: "Units",
+                columns: new[] { "Id", "Code" },
+                values: new object[] { 2, "lbs" });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Exercises_CreatedById",
                 table: "Exercises",
@@ -343,16 +337,6 @@ namespace TrainingLogger.Migrations
                 name: "IX_Trainings_UserId",
                 table: "Trainings",
                 column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Units_CreatedById",
-                table: "Units",
-                column: "CreatedById");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Units_LastUpdatedById",
-                table: "Units",
-                column: "LastUpdatedById");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
