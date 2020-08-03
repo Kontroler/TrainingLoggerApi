@@ -1,5 +1,6 @@
-.vscode
-bin
-obj
-*.db
-appsettings.json
+.vs
+*/.vscode
+*/bin
+*/obj
+src/*.db
+src/appsettings.json    
