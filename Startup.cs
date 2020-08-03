@@ -13,6 +13,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using TrainingLogger.API.Data;
 using TrainingLogger.API.Helpers;
+using TrainingLogger.Data;
 using TrainingLogger.Services;
 
 namespace TrainingLogger
@@ -32,10 +33,14 @@ namespace TrainingLogger
             services.AddDbContext<DataContext>(x => x.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
             services.AddControllers().AddNewtonsoftJson();
             services.AddCors();
-            services.AddAutoMapper(typeof(UserRepository).Assembly);
+            services.AddAutoMapper(typeof(Startup).Assembly);
             services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<ITrainingRepository, TrainingRepository>();
+            services.AddScoped<ITrainingService, TrainingService>();
+            services.AddScoped<IExerciseRepository, ExerciseRepository>();
+            services.AddScoped<IUnitRepository, UnitRepository>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options => {
                     options.TokenValidationParameters = new TokenValidationParameters

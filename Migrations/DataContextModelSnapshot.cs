@@ -238,28 +238,24 @@ namespace TrainingLogger.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("Code")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("Created")
+                    b.Property<string>("Code")
                         .HasColumnType("TEXT");
-
-                    b.Property<int>("CreatedById")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("LastUpdated")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("LastUpdatedById")
-                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CreatedById");
-
-                    b.HasIndex("LastUpdatedById");
-
                     b.ToTable("Units");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Code = "kg"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Code = "lbs"
+                        });
                 });
 
             modelBuilder.Entity("TrainingLogger.Models.Exercise", b =>
@@ -373,21 +369,6 @@ namespace TrainingLogger.Migrations
                     b.HasOne("TrainingLogger.Models.Unit", "Unit")
                         .WithMany()
                         .HasForeignKey("UnitId");
-                });
-
-            modelBuilder.Entity("TrainingLogger.Models.Unit", b =>
-                {
-                    b.HasOne("TrainingLogger.API.Models.User", "CreatedBy")
-                        .WithMany()
-                        .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TrainingLogger.API.Models.User", "LastUpdatedBy")
-                        .WithMany()
-                        .HasForeignKey("LastUpdatedById")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

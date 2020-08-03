@@ -1,3 +1,4 @@
+using System;
 using TrainingLogger.API.Models;
 using Microsoft.EntityFrameworkCore;
 using TrainingLogger.Models;
@@ -18,9 +19,18 @@ namespace TrainingLogger.API.Data
 
         protected override void OnModelCreating(ModelBuilder builder) 
         {
-            // builder.Entity<User>()
-            // .HasMany(u => u.Trainings)
-            // .WithOne(x => x.User);
+            builder.Entity<Unit>().HasData(
+                new Unit
+                {
+                    Id = 1,
+                    Code = "kg"
+                },
+                new Unit
+                {
+                    Id = 2,
+                    Code = "lbs"
+                }
+            );
         }
     }
 }
