@@ -13,6 +13,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using TrainingLogger.API.Data;
 using TrainingLogger.API.Helpers;
+using TrainingLogger.Services;
 
 namespace TrainingLogger
 {
@@ -33,6 +34,7 @@ namespace TrainingLogger
             services.AddCors();
             services.AddAutoMapper(typeof(UserRepository).Assembly);
             services.AddScoped<IAuthRepository, AuthRepository>();
+            services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options => {
