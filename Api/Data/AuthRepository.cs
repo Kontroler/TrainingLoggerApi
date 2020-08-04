@@ -21,6 +21,8 @@ namespace TrainingLogger.API.Data
             if (user == null) return null;
             if (!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt)) return null;
 
+            user.LastActive = DateTime.Now;
+            await _context.SaveChangesAsync();
             return user;
         }
 

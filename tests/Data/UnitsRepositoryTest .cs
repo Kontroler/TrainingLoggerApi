@@ -8,10 +8,10 @@ using TrainingLogger.Models;
 
 namespace Tests.Data
 {
-    public abstract class Test1
+    public abstract class UnitsRepositoryTest
     {
         #region Seeding
-        protected Test1(DbContextOptions<DataContext> contextOptions)
+        protected UnitsRepositoryTest(DbContextOptions<DataContext> contextOptions)
         {
             ContextOptions = contextOptions;
         }
@@ -24,8 +24,6 @@ namespace Tests.Data
             using var context = new DataContext(ContextOptions);
             context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
-
-            context.SaveChanges();
         }
         #endregion
 
@@ -36,7 +34,7 @@ namespace Tests.Data
             using var context = new DataContext(ContextOptions);
             var repository = new UnitRepository(context);
             var unitKg = repository.GetByCode("kg").Result;
-            
+
             Assert.AreEqual(1, unitKg.Id);
             Assert.AreEqual("kg", unitKg.Code);
         }
@@ -49,7 +47,7 @@ namespace Tests.Data
             using var context = new DataContext(ContextOptions);
             var repository = new UnitRepository(context);
             var unitKg = repository.GetByCode("lbs").Result;
-            
+
             Assert.AreEqual(2, unitKg.Id);
             Assert.AreEqual("lbs", unitKg.Code);
         }
@@ -62,7 +60,7 @@ namespace Tests.Data
             using var context = new DataContext(ContextOptions);
             var repository = new UnitRepository(context);
             var unit = new Unit { Code = "pcs." };
-            
+
             repository.Add(unit);
 
             Assert.AreEqual(3, unit.Id);
@@ -76,7 +74,7 @@ namespace Tests.Data
         {
             using var context = new DataContext(ContextOptions);
             var repository = new UnitRepository(context);
-            
+
             var units = await repository.GetAll();
             Assert.AreEqual(2, units.Count());
 

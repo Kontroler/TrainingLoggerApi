@@ -3,9 +3,9 @@ using TrainingLogger.API.Data;
 
 namespace Tests.Data
 {
-    public class InMemoryUnitsControllerTest : UnitsRepositoryTest 
+    public class InMemoryAuthRepositoryTest : AuthRepositoryTest
     {
-        public InMemoryUnitsControllerTest()
+        public InMemoryAuthRepositoryTest()
             : base(
                 new DbContextOptionsBuilder<DataContext>()
                     .UseInMemoryDatabase("TestDatabase")
