@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using TrainingLogger.API.Data;
@@ -8,7 +9,7 @@ namespace TrainingLogger.Data
     public class UnitRepository : IUnitRepository
     {
         public readonly DataContext _context;
-        public UnitRepository(DataContext context)
+        public  UnitRepository(DataContext context)
         {
             _context = context;
 
@@ -21,6 +22,11 @@ namespace TrainingLogger.Data
         public void Delete(Unit entity)
         {
             _context.Units.Remove(entity);
+        }
+
+        public async Task<IEnumerable<Unit>> GetAll()
+        {
+            return await _context.Units.ToListAsync();
         }
 
         public async Task<Unit> GetByCode(string code)
