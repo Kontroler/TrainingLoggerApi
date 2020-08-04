@@ -63,9 +63,6 @@ namespace TrainingLogger.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("TrainingId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<int?>("UserId")
                         .HasColumnType("INTEGER");
 
@@ -74,8 +71,6 @@ namespace TrainingLogger.Migrations
                     b.HasIndex("CreatedById");
 
                     b.HasIndex("LastUpdatedById");
-
-                    b.HasIndex("TrainingId");
 
                     b.HasIndex("UserId");
 
@@ -272,10 +267,6 @@ namespace TrainingLogger.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TrainingLogger.Models.Training", null)
-                        .WithMany("Exercises")
-                        .HasForeignKey("TrainingId");
-
                     b.HasOne("TrainingLogger.API.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
@@ -319,7 +310,7 @@ namespace TrainingLogger.Migrations
                         .IsRequired();
 
                     b.HasOne("TrainingLogger.Models.Training", "Trainig")
-                        .WithMany()
+                        .WithMany("Exercises")
                         .HasForeignKey("TrainingId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

@@ -3,7 +3,7 @@ using NUnit.Framework;
 using TrainingLogger.API.Models;
 using TrainingLogger.Models;
 
-namespace tests.Models
+namespace Tests.Models
 {
     public class ExerciseTest
     {
