@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using TrainingLogger.API.Data;
@@ -27,6 +29,11 @@ namespace TrainingLogger.Data
         public async Task<Exercise> GetByName(string name, int userId)
         {
             return await _context.Exercises.FirstOrDefaultAsync(e => e.Name == name && e.User.Id == userId);
+        }
+
+        public async Task<IEnumerable<Exercise>> GetAllByUserId(int userId)
+        {
+            return await _context.Exercises.Where(e => e.User.Id == userId).ToListAsync();
         }
 
         public async Task<bool> SaveAll()
