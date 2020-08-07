@@ -26,11 +26,11 @@ namespace TrainingLogger.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Username = table.Column<string>(nullable: true),
-                    PasswordHash = table.Column<byte[]>(nullable: true),
-                    PasswordSalt = table.Column<byte[]>(nullable: true),
+                    Username = table.Column<string>(nullable: false),
+                    PasswordHash = table.Column<byte[]>(nullable: false),
+                    PasswordSalt = table.Column<byte[]>(nullable: false),
                     Created = table.Column<DateTime>(nullable: false),
-                    LastActive = table.Column<DateTime>(nullable: false)
+                    LastActive = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -47,7 +47,7 @@ namespace TrainingLogger.Migrations
                     LastUpdated = table.Column<DateTime>(nullable: false),
                     CreatedById = table.Column<int>(nullable: false),
                     LastUpdatedById = table.Column<int>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(nullable: false),
                     UserId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
@@ -83,7 +83,7 @@ namespace TrainingLogger.Migrations
                     LastUpdated = table.Column<DateTime>(nullable: false),
                     CreatedById = table.Column<int>(nullable: false),
                     LastUpdatedById = table.Column<int>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(nullable: false),
                     Date = table.Column<DateTime>(nullable: false),
                     UserId = table.Column<int>(nullable: true)
                 },
@@ -252,6 +252,12 @@ namespace TrainingLogger.Migrations
                 column: "LastUpdatedById");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Exercises_Name",
+                table: "Exercises",
+                column: "Name",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Exercises_UserId",
                 table: "Exercises",
                 column: "UserId");
@@ -325,6 +331,18 @@ namespace TrainingLogger.Migrations
                 name: "IX_Trainings_UserId",
                 table: "Trainings",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Units_Code",
+                table: "Units",
+                column: "Code",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_Username",
+                table: "Users",
+                column: "Username",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

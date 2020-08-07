@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -9,7 +10,7 @@ namespace TrainingLogger.Data
     public class UnitRepository : IUnitRepository
     {
         public readonly DataContext _context;
-        public  UnitRepository(DataContext context)
+        public UnitRepository(DataContext context)
         {
             _context = context;
 

@@ -25,19 +25,25 @@ namespace TrainingLogger.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("LastActive")
+                    b.Property<DateTime?>("LastActive")
                         .HasColumnType("TEXT");
 
                     b.Property<byte[]>("PasswordHash")
+                        .IsRequired()
                         .HasColumnType("BLOB");
 
                     b.Property<byte[]>("PasswordSalt")
+                        .IsRequired()
                         .HasColumnType("BLOB");
 
                     b.Property<string>("Username")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Username")
+                        .IsUnique();
 
                     b.ToTable("Users");
                 });
@@ -61,6 +67,7 @@ namespace TrainingLogger.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<int?>("UserId")
@@ -71,6 +78,9 @@ namespace TrainingLogger.Migrations
                     b.HasIndex("CreatedById");
 
                     b.HasIndex("LastUpdatedById");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.HasIndex("UserId");
 
@@ -99,6 +109,7 @@ namespace TrainingLogger.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<int?>("UserId")
@@ -237,6 +248,9 @@ namespace TrainingLogger.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Code")
+                        .IsUnique();
 
                     b.ToTable("Units");
 

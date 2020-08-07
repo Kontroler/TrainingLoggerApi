@@ -10,6 +10,7 @@ using TrainingLogger.Models;
 
 namespace Tests.Data
 {
+    [TestFixture]
     public abstract class ExerciseRepositoryTest
     {
         #region Seeding
@@ -20,7 +21,7 @@ namespace Tests.Data
 
         protected DbContextOptions<DataContext> ContextOptions { get; }
 
-        [SetUp]
+        [OneTimeSetUp]
         public async Task Seed()
         {
             using var context = new DataContext(ContextOptions);
@@ -45,6 +46,15 @@ namespace Tests.Data
         }
         #endregion
 
+        #region Exercise methods
+        private async Task AddExercise(string exerciseName, IExerciseRepository repo, DataContext context)
+        {
+            var exercise = Exercise.Create(exerciseName, await GetUser(context));
+            repo.Add(exercise);
+            await repo.SaveAll();
+        }
+        #endregion
+
         #region CadAdd
         [Test]
         public async Task CanAdd()
@@ -53,13 +63,11 @@ namespace Tests.Data
             var user = await GetUser(context);
 
             var exerciseRepo = new ExerciseRepository(context);
-            var exercise = new Exercise { Name = "Exercise test", User = user };
-            exerciseRepo.Add(exercise);
+            var countBeforeAdd = await exerciseRepo.GetAllByUserId(user.Id);
+            await AddExercise("Exercise test CanAdd", exerciseRepo, context);
+            var countAfterAdd = await exerciseRepo.GetAllByUserId(user.Id);
 
-            Assert.AreEqual(1, exercise.Id);
-            Assert.AreEqual("Exercise test", exercise.Name);
-            Assert.AreEqual(1, exercise.User.Id);
-            Assert.AreEqual("User", exercise.User.Username);
+            Assert.AreNotSame(countBeforeAdd, countAfterAdd);
         }
         #endregion
 
@@ -83,18 +91,9 @@ namespace Tests.Data
             var user = await GetUser(context);
 
             var exerciseRepo = new ExerciseRepository(context);
-
+            await AddExercise("Exercise test CanGetByUserId", exerciseRepo, context);
             var exercises = await exerciseRepo.GetAllByUserId(user.Id);
-            Assert.IsEmpty(exercises);
-
-            // Add new exercise
-            var exercise = new Exercise { Name = "Exercise test", User = user };
-            exerciseRepo.Add(exercise);
-            await exerciseRepo.SaveAll();
-
-            // Check is added
-            exercises = await exerciseRepo.GetAllByUserId(user.Id);
-            Assert.AreEqual(1, exercises.Count());
+            Assert.IsNotEmpty(exercises);
         }
         #endregion
 
@@ -106,22 +105,15 @@ namespace Tests.Data
             var user = await GetUser(context);
 
             var exerciseRepo = new ExerciseRepository(context);
+            var exerciseName = "Exercise test CanGetByName";
+            await AddExercise(exerciseName, exerciseRepo, context);
 
-            var exercises = await exerciseRepo.GetAllByUserId(user.Id);
-            Assert.IsEmpty(exercises);
-
-            // Add new exercise
-            var exercise = new Exercise { Name = "Exercise test", User = user };
-            exerciseRepo.Add(exercise);
-            await exerciseRepo.SaveAll();
-
-            // Check is added
-            var exercisesReturned = await exerciseRepo.GetByName("Exercise test", user.Id);
-            Assert.AreEqual("Exercise test", exercisesReturned.Name);
+            var exercisesReturned = await exerciseRepo.GetByName(exerciseName, user.Id);
+            Assert.AreEqual(exerciseName, exercisesReturned.Name);
         }
         #endregion
 
-        #region CadDelete
+        #region CanDelete
         [Test]
         public async Task CanDelete()
         {
@@ -129,23 +121,18 @@ namespace Tests.Data
             var user = await GetUser(context);
 
             var exerciseRepo = new ExerciseRepository(context);
-
-            // Add new exercise
-            var exercise = new Exercise { Name = "Exercise test", User = user };
-            exerciseRepo.Add(exercise);
-            await exerciseRepo.SaveAll();
-
-            // Check is added
-            var exercises = await exerciseRepo.GetAllByUserId(user.Id);
-            Assert.AreEqual(1, exercises.Count());
+            var exerciseName ="Exercise test CanDelete"; 
+            await AddExercise(exerciseName, exerciseRepo, context);
+            var exercise = (await exerciseRepo.GetAllByUserId(user.Id)).FirstOrDefault(x => x.Name == exerciseName);
+            Assert.IsNotNull(exercise);
 
             // Delete exercise
             exerciseRepo.Delete(exercise);
             await exerciseRepo.SaveAll();
 
             // Check is deleted
-            exercises = await exerciseRepo.GetAllByUserId(user.Id);
-            Assert.IsEmpty(exercises);
+            var exercises = await exerciseRepo.GetAllByUserId(user.Id);
+            Assert.IsFalse(exercises.Any(x => x.Name == exerciseName));
         }
         #endregion
     }

@@ -16,7 +16,7 @@ namespace Tests.Data
 
         protected DbContextOptions<DataContext> ContextOptions { get; }
 
-        [SetUp]
+        [OneTimeSetUp]
         public void Seed()
         {
             using var context = new DataContext(ContextOptions);
@@ -25,19 +25,43 @@ namespace Tests.Data
         }
         #endregion
 
+        #region User methods
+        private async Task<User> AddUser(string username, IUserRepository repo)
+        {
+            var user = new User
+            {
+                Username = username,
+                PasswordHash = new byte[0],
+                PasswordSalt = new byte[0],
+                Created = new System.DateTime(2020, 1, 1),
+                LastActive = null
+            };
+            repo.Add(user);
+            await repo.SaveAll();
+
+            return user;
+        }
+        #endregion
+
         #region CanAdd
         [Test]
-        public void CanAdd()
+        public async Task CanAdd()
         {
             using var context = new DataContext(ContextOptions);
             var repo = new UserRepository(context);
 
-            var user = new User { Username = "TestName" };
+            var user = new User
+            {
+                Username = "TestName CanAdd",
+                PasswordHash = new byte[0],
+                PasswordSalt = new byte[0],
+                Created = new System.DateTime(2020, 1, 1),
+                LastActive = null
+            };
             repo.Add(user);
+            var saved = await repo.SaveAll();
+            Assert.IsTrue(saved);
 
-            Assert.AreEqual(1, user.Id);
-            Assert.AreEqual("TestName", user.Username);
-            Assert.IsNull(user.LastActive);
         }
         #endregion
 
@@ -48,18 +72,12 @@ namespace Tests.Data
             using var context = new DataContext(ContextOptions);
             var repo = new UserRepository(context);
 
-            var user = new User { Username = "TestName" };
-            repo.Add(user);
-            await repo.SaveAll();
-
-            Assert.AreEqual(1, user.Id);
-            Assert.AreEqual("TestName", user.Username);
-            Assert.IsNull(user.LastActive);
+            var user = await AddUser("TestName CanDelete", repo);
 
             repo.Delete(user);
             await repo.SaveAll();
-            
-            var userReturned = await repo.GetUser(1);
+
+            var userReturned = await repo.GetUser(user.Id);
             Assert.IsNull(userReturned);
         }
         #endregion
@@ -71,13 +89,11 @@ namespace Tests.Data
             using var context = new DataContext(ContextOptions);
             var repo = new UserRepository(context);
 
-            var user = new User { Username = "TestName" };
-            repo.Add(user);
-            await repo.SaveAll();
-            
-            var userReturned = await repo.GetUser(1);
-            Assert.AreEqual(1, userReturned.Id);
-            Assert.AreEqual("TestName", userReturned.Username);
+            var user = await AddUser("TestName CanGetUser", repo);
+
+            var userReturned = await repo.GetUser(user.Id);
+            Assert.IsNotNull(userReturned);
+            Assert.AreEqual("TestName CanGetUser", userReturned.Username);
             Assert.IsNull(userReturned.LastActive);
         }
         #endregion

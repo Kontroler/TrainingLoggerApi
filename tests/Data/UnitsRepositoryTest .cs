@@ -8,17 +8,18 @@ using TrainingLogger.Models;
 
 namespace Tests.Data
 {
+    [TestFixture]
     public abstract class UnitsRepositoryTest
     {
         #region Seeding
         protected UnitsRepositoryTest(DbContextOptions<DataContext> contextOptions)
         {
             ContextOptions = contextOptions;
+            Seed();
         }
 
         protected DbContextOptions<DataContext> ContextOptions { get; }
-
-        [SetUp]
+        
         public void Seed()
         {
             using var context = new DataContext(ContextOptions);
@@ -55,37 +56,35 @@ namespace Tests.Data
 
         #region CanAdd
         [Test]
-        public void CanAdd()
+        public async Task CanAdd()
         {
             using var context = new DataContext(ContextOptions);
             var repository = new UnitRepository(context);
             var unit = new Unit { Code = "pcs." };
 
             repository.Add(unit);
+            await repository.SaveAll();
 
-            Assert.AreEqual(3, unit.Id);
-            Assert.AreEqual("pcs.", unit.Code);
+            var unitPcs = await repository.GetByCode("pcs.");
+            Assert.AreEqual(3, unitPcs.Id);
+            Assert.AreEqual("pcs.", unitPcs.Code);
         }
         #endregion
 
-        #region CanGetAllEndDelete
+        #region CanDelete
         [Test]
-        public async Task CanGetAllEndDelete()
+        public async Task CanDelete()
         {
             using var context = new DataContext(ContextOptions);
             var repository = new UnitRepository(context);
 
-            var units = await repository.GetAll();
-            Assert.AreEqual(2, units.Count());
+            var units = await repository.GetByCode("pcs.");
+            Assert.NotNull(units);
 
+            repository.Delete(units);
+            await repository.SaveAll();
 
-            repository.Delete(units.ElementAt(0));
-            var saved = await repository.SaveAll();
-            Assert.IsTrue(saved);
-
-
-            units = await repository.GetAll();
-            Assert.AreEqual(1, units.Count());
+            Assert.False(context.Set<Unit>().Any(u => u.Code == "pcs."));
         }
         #endregion
 

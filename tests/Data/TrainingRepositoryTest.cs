@@ -20,7 +20,7 @@ namespace Tests.Data
 
         protected DbContextOptions<DataContext> ContextOptions { get; }
 
-        [SetUp]
+        [OneTimeSetUp]
         public async Task Seed()
         {
             using var context = new DataContext(ContextOptions);
@@ -28,7 +28,6 @@ namespace Tests.Data
             context.Database.EnsureCreated();
             await AddUser(context);
             await AddExercise(context);
-            await AddUnit(context);
         }
         #endregion
 
@@ -64,17 +63,6 @@ namespace Tests.Data
         #endregion
 
         #region Unit methods
-        private async Task AddUnit(DataContext context)
-        {
-            var repo = new UnitRepository(context);
-            var unit = new Unit
-            {
-                Code = "kg"
-            };
-            repo.Add(unit);
-            await repo.SaveAll();
-        }
-
         private async Task<Unit> GetUnit(DataContext context)
         {
             var repo = new UnitRepository(context);
@@ -135,8 +123,9 @@ namespace Tests.Data
             var trainingRepo = new TrainingRepository(context);
             var training = await CreateTraining(context, user);
             trainingRepo.Add(training);
-            await trainingRepo.SaveAll();
-
+            var saved = await trainingRepo.SaveAll();
+            Assert.IsTrue(saved);
+            
             var trainingsReturned = await trainingRepo.GetAllByUserId(user.Id);
             Assert.AreEqual(1, trainingsReturned.Count());
 
