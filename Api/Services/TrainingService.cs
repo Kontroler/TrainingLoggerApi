@@ -46,17 +46,16 @@ namespace TrainingLogger.Services
                     exercise = await _repoExercise.GetByName(trainingExerciseDto.Exercise.Name, user.Id);
                 }
                 var exerciseToCreate = TrainingExercise.Create(exercise, user);
-                foreach (var set in trainingExerciseDto.Sets)
+
+                var setToCreate = TrainingExerciseSet.Create(user);
+                foreach (var rep in trainingExerciseDto.Set.Reps)
                 {
-                    var setToCreate = TrainingExerciseSet.Create(user);
-                    foreach (var rep in set.Reps)
-                    {
-                        var unit = await _repoUnit.GetByCode(rep.Unit.Code);
-                        var repToCreate = TrainingExerciseSetRep.Create(rep.Value, rep.Weight, unit, user);
-                        setToCreate.Reps.Add(repToCreate);
-                    }
-                    exerciseToCreate.Sets.Add(setToCreate);
+                    var unit = await _repoUnit.GetByCode(rep.Unit.Code);
+                    var repToCreate = TrainingExerciseSetRep.Create(rep.Value, rep.Weight, unit, user);
+                    setToCreate.Reps.Add(repToCreate);
                 }
+                exerciseToCreate.Set = setToCreate;
+
                 trainingToCreate.Exercises.Add(exerciseToCreate);
             }
             _repoTraining.Add(trainingToCreate);

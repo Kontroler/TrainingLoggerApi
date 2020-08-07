@@ -94,19 +94,19 @@ namespace Tests.Data
             var training0Exercise0 = training0.Exercises.ElementAt(0);
             Assert.AreEqual(1, training0Exercise0.Id);
             Assert.AreEqual("Exercise 1", training0Exercise0.Exercise.Name);
-            Assert.AreEqual(1, training0Exercise0.Sets.Count());
+            Assert.NotNull(training0Exercise0.Set);
 
-            var trainig0Exercise0Set0 = training0Exercise0.Sets.ElementAt(0);
-            Assert.AreEqual(1, trainig0Exercise0Set0.Id);
-            Assert.AreEqual(2, trainig0Exercise0Set0.Reps.Count());
+            var trainig0Exercise0Set = training0Exercise0.Set;
+            Assert.AreEqual(1, trainig0Exercise0Set.Id);
+            Assert.AreEqual(2, trainig0Exercise0Set.Reps.Count());
 
-            var trainig0Exercise0Set0Rep0 = trainig0Exercise0Set0.Reps.ElementAt(0);
+            var trainig0Exercise0Set0Rep0 = trainig0Exercise0Set.Reps.ElementAt(0);
             Assert.AreEqual(1, trainig0Exercise0Set0Rep0.Id);
             Assert.AreEqual(10, trainig0Exercise0Set0Rep0.Value);
             Assert.AreEqual(80, trainig0Exercise0Set0Rep0.Weight);
             Assert.AreEqual("kg", trainig0Exercise0Set0Rep0.Unit.Code);
 
-            var trainig0Exercise0Set0Rep1 = trainig0Exercise0Set0.Reps.ElementAt(1);
+            var trainig0Exercise0Set0Rep1 = trainig0Exercise0Set.Reps.ElementAt(1);
             Assert.AreEqual(2, trainig0Exercise0Set0Rep1.Id);
             Assert.AreEqual(10, trainig0Exercise0Set0Rep1.Value);
             Assert.AreEqual(85, trainig0Exercise0Set0Rep1.Weight);
@@ -125,7 +125,7 @@ namespace Tests.Data
             trainingRepo.Add(training);
             var saved = await trainingRepo.SaveAll();
             Assert.IsTrue(saved);
-            
+
             var trainingsReturned = await trainingRepo.GetAllByUserId(user.Id);
             Assert.AreEqual(1, trainingsReturned.Count());
 
@@ -176,7 +176,7 @@ namespace Tests.Data
 
             trainigExerciseSet.Reps.Add(trainingExerciseSetRep1);
             trainigExerciseSet.Reps.Add(trainingExerciseSetRep2);
-            trainingExercise.Sets.Add(trainigExerciseSet);
+            trainingExercise.Set = trainigExerciseSet;
             training.Exercises.Add(trainingExercise);
             return training;
         }

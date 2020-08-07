@@ -39,16 +39,16 @@ namespace TrainingLogger.Data
                 .ThenInclude(exercise => exercise.Exercise)
 
                 .Include(training => training.Exercises)
-                .ThenInclude(exercise => exercise.Sets)
+                .ThenInclude(exercise => exercise.Set)
                 .ThenInclude(set => set.Exercise)
 
                 .Include(training => training.Exercises)
-                .ThenInclude(exercise => exercise.Sets)
+                .ThenInclude(exercise => exercise.Set)
                 .ThenInclude(set => set.Reps)
                 .ThenInclude(rep => rep.Unit)
 
                 .Include(training => training.Exercises)
-                .ThenInclude(exercise => exercise.Sets)
+                .ThenInclude(exercise => exercise.Set)
                 .ThenInclude(set => set.Reps)
                 .ThenInclude(rep => rep.Set)                
                 
