@@ -13,7 +13,6 @@ namespace TrainingLogger.API.Data
         public DbSet<User> Users { get; set; }
         public DbSet<Unit> Units { get; set; }
         public DbSet<Exercise> Exercises { get; set; }
-        public DbSet<TrainingExerciseSetRep> TrainingExerciseSetReps { get; set; }
         public DbSet<TrainingExerciseSet> TrainingExerciseSets { get; set; }
         public DbSet<TrainingExercise> TrainingExercises { get; set; }
         public DbSet<Training> Trainings { get; set; }
@@ -23,7 +22,7 @@ namespace TrainingLogger.API.Data
             builder.ApplyConfiguration(new UserConfiguration());
             builder.ApplyConfiguration(new UnitConfiguration());
             builder.ApplyConfiguration(new ExerciseConfiguration());
-            builder.ApplyConfiguration(new TrainingExerciseSetRepConfiguration());
+            builder.ApplyConfiguration(new TrainingExerciseSetConfiguration());
             builder.ApplyConfiguration(new TrainingConfiguration());
         }
     }
@@ -101,12 +100,12 @@ namespace TrainingLogger.API.Data
         }
     }
 
-    public class TrainingExerciseSetRepConfiguration : BaseEntityTypeConfiguration<TrainingExerciseSetRep>
+    public class TrainingExerciseSetConfiguration : BaseEntityTypeConfiguration<TrainingExerciseSet>
     {
-        public override void Configure(EntityTypeBuilder<TrainingExerciseSetRep> builder)
+        public override void Configure(EntityTypeBuilder<TrainingExerciseSet> builder)
         {
             builder
-                .Property(b => b.Value)
+                .Property(b => b.Quantity)
                 .IsRequired();
             builder
                 .Property(b => b.Weight)

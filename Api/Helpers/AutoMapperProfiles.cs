@@ -12,7 +12,6 @@ namespace TrainingLogger.API.Helpers
         {
             CreateMap<Exercise, ExerciseDto>();
             CreateMap<Unit, UnitDto>();
-            CreateMap<TrainingExerciseSetRep, TrainingExerciseSetRepDto>();
             CreateMap<TrainingExerciseSet, TrainingExerciseSetDto>();
             CreateMap<TrainingExercise, TrainingExerciseDto>();
             CreateMap<Training, TrainingDto>();

@@ -94,23 +94,21 @@ namespace Tests.Data
             var training0Exercise0 = training0.Exercises.ElementAt(0);
             Assert.AreEqual(1, training0Exercise0.Id);
             Assert.AreEqual("Exercise 1", training0Exercise0.Exercise.Name);
-            Assert.NotNull(training0Exercise0.Set);
+            Assert.NotNull(training0Exercise0.Sets);
 
-            var trainig0Exercise0Set = training0Exercise0.Set;
-            Assert.AreEqual(1, trainig0Exercise0Set.Id);
-            Assert.AreEqual(2, trainig0Exercise0Set.Reps.Count());
+            var trainig0Exercise0Set0 = training0Exercise0.Sets.ElementAt(0);
+            Assert.AreEqual(1, trainig0Exercise0Set0.Id);
+            Assert.AreEqual(10, trainig0Exercise0Set0.Quantity);
+            Assert.AreEqual(80, trainig0Exercise0Set0.Weight);
+            Assert.AreEqual("kg", trainig0Exercise0Set0.Unit.Code
+            );
 
-            var trainig0Exercise0Set0Rep0 = trainig0Exercise0Set.Reps.ElementAt(0);
-            Assert.AreEqual(1, trainig0Exercise0Set0Rep0.Id);
-            Assert.AreEqual(10, trainig0Exercise0Set0Rep0.Value);
-            Assert.AreEqual(80, trainig0Exercise0Set0Rep0.Weight);
-            Assert.AreEqual("kg", trainig0Exercise0Set0Rep0.Unit.Code);
-
-            var trainig0Exercise0Set0Rep1 = trainig0Exercise0Set.Reps.ElementAt(1);
-            Assert.AreEqual(2, trainig0Exercise0Set0Rep1.Id);
-            Assert.AreEqual(10, trainig0Exercise0Set0Rep1.Value);
-            Assert.AreEqual(85, trainig0Exercise0Set0Rep1.Weight);
-            Assert.AreEqual("kg", trainig0Exercise0Set0Rep1.Unit.Code);
+            var trainig0Exercise0Set1 = training0Exercise0.Sets.ElementAt(1);
+            Assert.AreEqual(2, trainig0Exercise0Set1.Id);
+            Assert.AreEqual(10, trainig0Exercise0Set1.Quantity);
+            Assert.AreEqual(85, trainig0Exercise0Set1.Weight);
+            Assert.AreEqual("kg", trainig0Exercise0Set1.Unit.Code
+            );
         }
 
         #endregion
@@ -140,9 +138,6 @@ namespace Tests.Data
 
             var trainingExerciseSetsAfterDelete = await context.TrainingExerciseSets.ToListAsync();
             Assert.IsEmpty(trainingExerciseSetsAfterDelete);
-
-            var trainingExerciseSetRepsAfterDelete = await context.TrainingExerciseSetReps.ToListAsync();
-            Assert.IsEmpty(trainingExerciseSetRepsAfterDelete);
         }
         #endregion
 
@@ -157,26 +152,23 @@ namespace Tests.Data
             var exercise = await GetExercise(context);
             var trainingExercise = TrainingExercise.Create(exercise, user);
 
-            var trainigExerciseSet = TrainingExerciseSet.Create(user);
-
             var unit = await GetUnit(context);
-            var trainingExerciseSetRep1 = TrainingExerciseSetRep.Create(
+            var trainingExerciseSet1 = TrainingExerciseSet.Create(
                 10,
                 80,
                 unit,
                 user
             );
 
-            var trainingExerciseSetRep2 = TrainingExerciseSetRep.Create(
+            var trainingExerciseSet2 = TrainingExerciseSet.Create(
                 10,
                 85,
                 unit,
                 user
             );
 
-            trainigExerciseSet.Reps.Add(trainingExerciseSetRep1);
-            trainigExerciseSet.Reps.Add(trainingExerciseSetRep2);
-            trainingExercise.Set = trainigExerciseSet;
+            trainingExercise.Sets.Add(trainingExerciseSet1);
+            trainingExercise.Sets.Add(trainingExerciseSet2);
             training.Exercises.Add(trainingExercise);
             return training;
         }

@@ -162,6 +162,9 @@ namespace TrainingLogger.Migrations
                     LastUpdated = table.Column<DateTime>(nullable: false),
                     CreatedById = table.Column<int>(nullable: false),
                     LastUpdatedById = table.Column<int>(nullable: false),
+                    Quantity = table.Column<decimal>(nullable: false),
+                    Weight = table.Column<decimal>(nullable: false),
+                    UnitId = table.Column<int>(nullable: true),
                     TrainingExerciseId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -185,46 +188,8 @@ namespace TrainingLogger.Migrations
                         principalTable: "TrainingExercises",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "TrainingExerciseSetReps",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Created = table.Column<DateTime>(nullable: false),
-                    LastUpdated = table.Column<DateTime>(nullable: false),
-                    CreatedById = table.Column<int>(nullable: false),
-                    LastUpdatedById = table.Column<int>(nullable: false),
-                    Value = table.Column<decimal>(nullable: false),
-                    Weight = table.Column<decimal>(nullable: false),
-                    UnitId = table.Column<int>(nullable: true),
-                    TrainingExerciseSetId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TrainingExerciseSetReps", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TrainingExerciseSetReps_Users_CreatedById",
-                        column: x => x.CreatedById,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_TrainingExerciseSetReps_Users_LastUpdatedById",
-                        column: x => x.LastUpdatedById,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_TrainingExerciseSetReps_TrainingExerciseSets_TrainingExerciseSetId",
-                        column: x => x.TrainingExerciseSetId,
-                        principalTable: "TrainingExerciseSets",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_TrainingExerciseSetReps_Units_UnitId",
+                        name: "FK_TrainingExerciseSets_Units_UnitId",
                         column: x => x.UnitId,
                         principalTable: "Units",
                         principalColumn: "Id",
@@ -283,26 +248,6 @@ namespace TrainingLogger.Migrations
                 column: "TrainingId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TrainingExerciseSetReps_CreatedById",
-                table: "TrainingExerciseSetReps",
-                column: "CreatedById");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TrainingExerciseSetReps_LastUpdatedById",
-                table: "TrainingExerciseSetReps",
-                column: "LastUpdatedById");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TrainingExerciseSetReps_TrainingExerciseSetId",
-                table: "TrainingExerciseSetReps",
-                column: "TrainingExerciseSetId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TrainingExerciseSetReps_UnitId",
-                table: "TrainingExerciseSetReps",
-                column: "UnitId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_TrainingExerciseSets_CreatedById",
                 table: "TrainingExerciseSets",
                 column: "CreatedById");
@@ -316,6 +261,11 @@ namespace TrainingLogger.Migrations
                 name: "IX_TrainingExerciseSets_TrainingExerciseId",
                 table: "TrainingExerciseSets",
                 column: "TrainingExerciseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TrainingExerciseSets_UnitId",
+                table: "TrainingExerciseSets",
+                column: "UnitId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Trainings_CreatedById",
@@ -348,16 +298,13 @@ namespace TrainingLogger.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "TrainingExerciseSetReps");
-
-            migrationBuilder.DropTable(
                 name: "TrainingExerciseSets");
 
             migrationBuilder.DropTable(
-                name: "Units");
+                name: "TrainingExercises");
 
             migrationBuilder.DropTable(
-                name: "TrainingExercises");
+                name: "Units");
 
             migrationBuilder.DropTable(
                 name: "Exercises");

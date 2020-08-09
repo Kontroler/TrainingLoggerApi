@@ -1,22 +1,22 @@
 using System;
-using System.Collections.Generic;
 using TrainingLogger.API.Models;
 
 namespace TrainingLogger.Models
 {
     public class TrainingExerciseSet : BaseModel
     {
-        public TrainingExerciseSet()
-        {
-            Reps = new List<TrainingExerciseSetRep>();
-        }
         public int Id { get; set; }
-        public ICollection<TrainingExerciseSetRep> Reps { get; set; }
+        public decimal Quantity { get; set; }
+        public decimal Weight { get; set; }
+        public Unit Unit { get; set; }
         public TrainingExercise Exercise { get; set; }
         public int TrainingExerciseId { get; set; }
 
-        public static TrainingExerciseSet Create(User user) => new TrainingExerciseSet
+        public static TrainingExerciseSet Create(decimal quantity, decimal weight, Unit unit, User user) => new TrainingExerciseSet
         {
+            Quantity = quantity,
+            Weight = weight,
+            Unit = unit,
             Created = DateTime.Now,
             CreatedBy = user,
             CreatedById = user.Id,

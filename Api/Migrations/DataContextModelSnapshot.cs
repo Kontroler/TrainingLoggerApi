@@ -181,46 +181,14 @@ namespace TrainingLogger.Migrations
                     b.Property<int>("LastUpdatedById")
                         .HasColumnType("INTEGER");
 
+                    b.Property<decimal>("Quantity")
+                        .HasColumnType("TEXT");
+
                     b.Property<int>("TrainingExerciseId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CreatedById");
-
-                    b.HasIndex("LastUpdatedById");
-
-                    b.HasIndex("TrainingExerciseId");
-
-                    b.ToTable("TrainingExerciseSets");
-                });
-
-            modelBuilder.Entity("TrainingLogger.Models.TrainingExerciseSetRep", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("CreatedById")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("LastUpdated")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("LastUpdatedById")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("TrainingExerciseSetId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int?>("UnitId")
                         .HasColumnType("INTEGER");
-
-                    b.Property<decimal>("Value")
-                        .HasColumnType("TEXT");
 
                     b.Property<decimal>("Weight")
                         .HasColumnType("TEXT");
@@ -231,11 +199,11 @@ namespace TrainingLogger.Migrations
 
                     b.HasIndex("LastUpdatedById");
 
-                    b.HasIndex("TrainingExerciseSetId");
+                    b.HasIndex("TrainingExerciseId");
 
                     b.HasIndex("UnitId");
 
-                    b.ToTable("TrainingExerciseSetReps");
+                    b.ToTable("TrainingExerciseSets");
                 });
 
             modelBuilder.Entity("TrainingLogger.Models.Unit", b =>
@@ -347,27 +315,6 @@ namespace TrainingLogger.Migrations
                     b.HasOne("TrainingLogger.Models.TrainingExercise", "Exercise")
                         .WithMany("Sets")
                         .HasForeignKey("TrainingExerciseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("TrainingLogger.Models.TrainingExerciseSetRep", b =>
-                {
-                    b.HasOne("TrainingLogger.API.Models.User", "CreatedBy")
-                        .WithMany()
-                        .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TrainingLogger.API.Models.User", "LastUpdatedBy")
-                        .WithMany()
-                        .HasForeignKey("LastUpdatedById")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TrainingLogger.Models.TrainingExerciseSet", "Set")
-                        .WithMany("Reps")
-                        .HasForeignKey("TrainingExerciseSetId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

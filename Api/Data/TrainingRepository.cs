@@ -39,18 +39,12 @@ namespace TrainingLogger.Data
                 .ThenInclude(exercise => exercise.Exercise)
 
                 .Include(training => training.Exercises)
-                .ThenInclude(exercise => exercise.Set)
+                .ThenInclude(exercise => exercise.Sets)
                 .ThenInclude(set => set.Exercise)
 
                 .Include(training => training.Exercises)
-                .ThenInclude(exercise => exercise.Set)
-                .ThenInclude(set => set.Reps)
-                .ThenInclude(rep => rep.Unit)
-
-                .Include(training => training.Exercises)
-                .ThenInclude(exercise => exercise.Set)
-                .ThenInclude(set => set.Reps)
-                .ThenInclude(rep => rep.Set)                
+                .ThenInclude(exercise => exercise.Sets)
+                .ThenInclude(set => set.Unit)               
                 
                 .ToListAsync();
         }
