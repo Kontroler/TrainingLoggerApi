@@ -11,6 +11,7 @@ Project is created with:
 * Microsoft.EntityFrameworkCore.Sqlite 3.1.6
 * nUnit 3.12.0
 * Moq 4.14.5  
+* Log4Net 2.0.8
 	
 ## Setup
 To run this project locally, use:
