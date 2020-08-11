@@ -105,7 +105,7 @@ namespace TrainingLogger.API.Data
         public override void Configure(EntityTypeBuilder<TrainingExerciseSet> builder)
         {
             builder
-                .Property(b => b.Quantity)
+                .Property(b => b.Reps)
                 .IsRequired();
             builder
                 .Property(b => b.Weight)

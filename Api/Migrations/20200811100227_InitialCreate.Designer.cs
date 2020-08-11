@@ -9,7 +9,7 @@ using TrainingLogger.API.Data;
 namespace TrainingLogger.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20200809180552_InitialCreate")]
+    [Migration("20200811100227_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -183,7 +183,7 @@ namespace TrainingLogger.Migrations
                     b.Property<int>("LastUpdatedById")
                         .HasColumnType("INTEGER");
 
-                    b.Property<decimal>("Quantity")
+                    b.Property<decimal>("Reps")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("TrainingExerciseId")

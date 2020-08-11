@@ -6,15 +6,15 @@ namespace TrainingLogger.Models
     public class TrainingExerciseSet : BaseModel
     {
         public int Id { get; set; }
-        public decimal Quantity { get; set; }
+        public decimal Reps { get; set; }
         public decimal Weight { get; set; }
         public Unit Unit { get; set; }
         public TrainingExercise Exercise { get; set; }
         public int TrainingExerciseId { get; set; }
 
-        public static TrainingExerciseSet Create(decimal quantity, decimal weight, Unit unit, User user) => new TrainingExerciseSet
+        public static TrainingExerciseSet Create(decimal reps, decimal weight, Unit unit, User user) => new TrainingExerciseSet
         {
-            Quantity = quantity,
+            Reps = reps,
             Weight = weight,
             Unit = unit,
             Created = DateTime.Now,

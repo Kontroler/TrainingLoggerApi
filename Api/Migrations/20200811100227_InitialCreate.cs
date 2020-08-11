@@ -162,7 +162,7 @@ namespace TrainingLogger.Migrations
                     LastUpdated = table.Column<DateTime>(nullable: false),
                     CreatedById = table.Column<int>(nullable: false),
                     LastUpdatedById = table.Column<int>(nullable: false),
-                    Quantity = table.Column<decimal>(nullable: false),
+                    Reps = table.Column<decimal>(nullable: false),
                     Weight = table.Column<decimal>(nullable: false),
                     UnitId = table.Column<int>(nullable: true),
                     TrainingExerciseId = table.Column<int>(nullable: false)

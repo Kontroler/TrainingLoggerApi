@@ -181,7 +181,7 @@ namespace TrainingLogger.Migrations
                     b.Property<int>("LastUpdatedById")
                         .HasColumnType("INTEGER");
 
-                    b.Property<decimal>("Quantity")
+                    b.Property<decimal>("Reps")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("TrainingExerciseId")

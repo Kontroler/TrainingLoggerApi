@@ -98,14 +98,14 @@ namespace Tests.Data
 
             var trainig0Exercise0Set0 = training0Exercise0.Sets.ElementAt(0);
             Assert.AreEqual(1, trainig0Exercise0Set0.Id);
-            Assert.AreEqual(10, trainig0Exercise0Set0.Quantity);
+            Assert.AreEqual(10, trainig0Exercise0Set0.Reps);
             Assert.AreEqual(80, trainig0Exercise0Set0.Weight);
             Assert.AreEqual("kg", trainig0Exercise0Set0.Unit.Code
             );
 
             var trainig0Exercise0Set1 = training0Exercise0.Sets.ElementAt(1);
             Assert.AreEqual(2, trainig0Exercise0Set1.Id);
-            Assert.AreEqual(10, trainig0Exercise0Set1.Quantity);
+            Assert.AreEqual(10, trainig0Exercise0Set1.Reps);
             Assert.AreEqual(85, trainig0Exercise0Set1.Weight);
             Assert.AreEqual("kg", trainig0Exercise0Set1.Unit.Code
             );

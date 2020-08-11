@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using TrainingLogger.Dtos;
 using TrainingLogger.Services;
 
@@ -14,31 +15,43 @@ namespace TrainingLogger.Controllers
     public class TrainingsController : ControllerBase
     {
         private readonly ITrainingService _service;
+        private readonly ILogger _logger;
 
-        public TrainingsController(ITrainingService service)
+        public TrainingsController(ITrainingService service, ILoggerFactory loggerFactory)
         {
             _service = service;
+            _logger = loggerFactory.CreateLogger<TrainingsController>();
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll() 
+        public async Task<IActionResult> GetAll()
         {
-            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-            var trainigs = await _service.GetAllByUserId(userId);
-            return Ok(trainigs);
+            try
+            {
+                var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+                var trainigs = await _service.GetAllByUserId(userId);
+                return Ok(trainigs);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.Message);
+                return BadRequest("Get all trainings error.");
+            }
         }
 
         [HttpPost]
         public async Task<IActionResult> Add(TrainingForAddDto trainingForAddDto)
         {
             var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-            try {                
-                await _service.Add(trainingForAddDto, userId);
-                return StatusCode(201);
-            } 
-            catch(Exception)
+            try
             {
-                return BadRequest("Add training error");
+                var result = await _service.Add(trainingForAddDto, userId);
+                return StatusCode(201);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.Message);
+                return BadRequest("Add training error.");
             }
         }
     }
