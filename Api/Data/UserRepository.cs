@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using TrainingLogger.API.Models;
 using Microsoft.EntityFrameworkCore;
+using TrainingLogger.Exceptions;
 
 namespace TrainingLogger.API.Data
 {
@@ -14,6 +15,10 @@ namespace TrainingLogger.API.Data
 
         public void Add(User entity)
         {
+            if (string.IsNullOrWhiteSpace(entity.Username))
+            {
+                throw new ArgumentNullOrWhiteSpaceException("Username cannot be null or white space");
+            }
             _context.Add(entity);
         }
 

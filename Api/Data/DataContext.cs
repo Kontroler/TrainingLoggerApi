@@ -37,7 +37,8 @@ namespace TrainingLogger.API.Data
 
             builder
                 .Property(u => u.Username)
-                .IsRequired();
+                .IsRequired();            
+
             builder
                 .Property(u => u.PasswordHash)
                 .IsRequired();

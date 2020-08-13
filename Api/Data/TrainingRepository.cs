@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using TrainingLogger.API.Data;
+using TrainingLogger.Exceptions;
 using TrainingLogger.Models;
 
 namespace TrainingLogger.Data
@@ -18,6 +19,17 @@ namespace TrainingLogger.Data
 
         public void Add(Training entity)
         {
+            if (string.IsNullOrWhiteSpace(entity.Name))
+            {
+                throw new ArgumentNullOrWhiteSpaceException("Training name cannot be null or white space");
+            }
+            foreach (var exercise in entity.Exercises)
+            {
+                if (string.IsNullOrWhiteSpace(exercise.Exercise.Name))
+                {
+                    throw new ArgumentNullOrWhiteSpaceException("Exercise name cannot be null or white space");
+                }
+            }            
             _context.Trainings.Add(entity);
         }
 
@@ -29,7 +41,7 @@ namespace TrainingLogger.Data
         public async Task<IEnumerable<Training>> GetAllByUserId(int userId)
         {
             return await _context.Trainings
-                .Where(t => t.User.Id == userId)                
+                .Where(t => t.User.Id == userId)
                 .Include(training => training.User)
 
                 .Include(training => training.Exercises)
@@ -44,8 +56,17 @@ namespace TrainingLogger.Data
 
                 .Include(training => training.Exercises)
                 .ThenInclude(exercise => exercise.Sets)
-                .ThenInclude(set => set.Unit)               
-                
+                .ThenInclude(set => set.Unit)
+
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<string>> GetAllTrainingNames(int userId)
+        {
+            return await _context.Trainings
+                .Where(t => t.User.Id == userId)
+                .Select(t => t.Name)
+                .Distinct()
                 .ToListAsync();
         }
 

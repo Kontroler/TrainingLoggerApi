@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using TrainingLogger.API.Data;
@@ -34,7 +35,7 @@ namespace TrainingLogger.Services
         {
             var user = await _repoUser.GetUser(userId);
 
-            var trainingToCreate = Training.Create(trainingForAddDto.Name, trainingForAddDto.Date, user);
+            var trainingToCreate = Training.Create(trainingForAddDto.Name.Trim(), trainingForAddDto.Date, user);
 
             foreach (var trainingExerciseDto in trainingForAddDto.Exercises)
             {
@@ -66,6 +67,14 @@ namespace TrainingLogger.Services
 
             var trainingDtos = _mapper.Map<IEnumerable<TrainingDto>>(trainings);
             return trainingDtos;
+        }
+
+        public async Task<IEnumerable<TrainingNameResponseDto>> GetAllTrainingNames(int userId)
+        {
+            var trainingNames = await _repoTraining.GetAllTrainingNames(userId);
+
+            var trainingNamesResponseDtos = trainingNames.Select(name => new TrainingNameResponseDto { Name = name });
+            return trainingNamesResponseDtos;
         }
     }
 }

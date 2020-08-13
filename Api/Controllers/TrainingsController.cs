@@ -28,7 +28,7 @@ namespace TrainingLogger.Controllers
         {
             try
             {
-                var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+                var userId = GetUserId();
                 var trainigs = await _service.GetAllByUserId(userId);
                 return Ok(trainigs);
             }
@@ -39,12 +39,28 @@ namespace TrainingLogger.Controllers
             }
         }
 
+        [HttpGet("names")]
+        public async Task<IActionResult> GetAllNames()
+        {
+            try
+            {
+                var userId = GetUserId();
+                var trainingNames = await _service.GetAllTrainingNames(userId);
+                return Ok(trainingNames);
+            }
+            catch(Exception e)
+            {
+                _logger.LogError(e.Message);
+                return BadRequest("Get all training names error.");
+            }
+        }
+
         [HttpPost]
         public async Task<IActionResult> Add(TrainingForAddDto trainingForAddDto)
         {
-            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
             try
             {
+                var userId = GetUserId();
                 var result = await _service.Add(trainingForAddDto, userId);
                 return StatusCode(201);
             }
@@ -53,6 +69,12 @@ namespace TrainingLogger.Controllers
                 _logger.LogError(e.Message);
                 return BadRequest("Add training error.");
             }
+        }
+
+        private int GetUserId()
+        {
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            return userId;
         }
     }
 }

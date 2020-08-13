@@ -9,7 +9,7 @@ using TrainingLogger.API.Data;
 namespace TrainingLogger.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20200811100227_InitialCreate")]
+    [Migration("20200813110856_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

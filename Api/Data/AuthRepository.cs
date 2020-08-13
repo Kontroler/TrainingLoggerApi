@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using TrainingLogger.API.Models;
 using Microsoft.EntityFrameworkCore;
+using TrainingLogger.Exceptions;
 
 namespace TrainingLogger.API.Data
 {
@@ -16,6 +17,10 @@ namespace TrainingLogger.API.Data
 
         public async Task<User> Login(string username, string password)
         {
+            if (string.IsNullOrWhiteSpace(username))
+            {
+                throw new ArgumentNullOrWhiteSpaceException("Username cannot be null or white space");
+            }
             var user = await _context.Users.FirstOrDefaultAsync(x => x.Username == username);
             
             if (user == null) return null;

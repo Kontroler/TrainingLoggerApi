@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using TrainingLogger.API.Data;
+using TrainingLogger.Exceptions;
 using TrainingLogger.Models;
 
 namespace TrainingLogger.Data
@@ -18,6 +19,10 @@ namespace TrainingLogger.Data
 
         public void Add(Exercise entity)
         {
+            if (string.IsNullOrWhiteSpace(entity.Name))
+            {
+                throw new ArgumentNullOrWhiteSpaceException("Exercise name cannot be null or white space");
+            }
             _context.Exercises.Add(entity);
         }
 

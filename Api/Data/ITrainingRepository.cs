@@ -5,8 +5,9 @@ using TrainingLogger.Models;
 
 namespace TrainingLogger.Data
 {
-    public interface ITrainingRepository: IBaseRepository<Training>
+    public interface ITrainingRepository : IBaseRepository<Training>
     {
-         Task<IEnumerable<Training>> GetAllByUserId(int userId);
+        Task<IEnumerable<Training>> GetAllByUserId(int userId);
+        Task<IEnumerable<string>> GetAllTrainingNames(int userId);
     }
 }
