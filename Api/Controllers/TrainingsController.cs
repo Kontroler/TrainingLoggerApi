@@ -1,5 +1,4 @@
 using System;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,7 +11,7 @@ namespace TrainingLogger.Controllers
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class TrainingsController : ControllerBase
+    public class TrainingsController : BaseController
     {
         private readonly ITrainingService _service;
         private readonly ILogger _logger;
@@ -48,7 +47,7 @@ namespace TrainingLogger.Controllers
                 var trainingNames = await _service.GetAllTrainingNames(userId);
                 return Ok(trainingNames);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 _logger.LogError(e.Message);
                 return BadRequest("Get all training names error.");
@@ -71,10 +70,5 @@ namespace TrainingLogger.Controllers
             }
         }
 
-        private int GetUserId()
-        {
-            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-            return userId;
-        }
     }
 }

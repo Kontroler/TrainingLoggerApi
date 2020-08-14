@@ -45,5 +45,11 @@ namespace TrainingLogger.Data
         {
             return await _context.SaveChangesAsync() > 0;
         }
+
+        public async Task<IEnumerable<string>> GetAllNames(int userId)
+        {
+            var names = await _context.Exercises.Select(e => e.Name).ToListAsync();
+            return names;
+        }
     }
 }

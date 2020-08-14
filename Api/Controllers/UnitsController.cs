@@ -4,13 +4,14 @@ using Api.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using TrainingLogger.Controllers;
 
 namespace Api.Controllers
 {
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class UnitsController : ControllerBase
+    public class UnitsController : BaseController
     {
         private readonly IUnitService _service;
         private readonly ILogger _logger;

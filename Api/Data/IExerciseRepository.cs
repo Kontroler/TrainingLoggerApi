@@ -5,9 +5,10 @@ using TrainingLogger.Models;
 
 namespace TrainingLogger.Data
 {
-    public interface IExerciseRepository: IBaseRepository<Exercise>
+    public interface IExerciseRepository : IBaseRepository<Exercise>
     {
-         Task<Exercise> GetByName(string name, int userId);
-         Task<IEnumerable<Exercise>> GetAllByUserId(int userId);
+        Task<Exercise> GetByName(string name, int userId);
+        Task<IEnumerable<Exercise>> GetAllByUserId(int userId);
+        Task<IEnumerable<string>> GetAllNames(int userId);
     }
 }

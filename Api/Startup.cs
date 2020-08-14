@@ -45,6 +45,7 @@ namespace TrainingLogger
             services.AddScoped<IExerciseRepository, ExerciseRepository>();
             services.AddScoped<IUnitRepository, UnitRepository>();
             services.AddScoped<IUnitService, UnitService>();
+            services.AddScoped<IExerciseService, ExerciseService>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
