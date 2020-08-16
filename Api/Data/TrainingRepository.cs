@@ -29,7 +29,7 @@ namespace TrainingLogger.Data
                 {
                     throw new ArgumentNullOrWhiteSpaceException("Exercise name cannot be null or white space");
                 }
-            }            
+            }
             _context.Trainings.Add(entity);
         }
 

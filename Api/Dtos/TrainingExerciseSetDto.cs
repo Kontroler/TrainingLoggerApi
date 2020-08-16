@@ -5,6 +5,9 @@ namespace TrainingLogger.Dtos
     public class TrainingExerciseSetDto
     {
         [Required]
+        public int Id { get; set; }
+
+        [Required]
         public decimal Reps { get; set; }
 
         [Required]

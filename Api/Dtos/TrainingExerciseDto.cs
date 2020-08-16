@@ -6,6 +6,9 @@ namespace TrainingLogger.Dtos
     public class TrainingExerciseDto
     {
         [Required]
+        public int Id { get; set; }
+
+        [Required]
         public ExerciseDto Exercise { get; set; }
 
         [Required]
