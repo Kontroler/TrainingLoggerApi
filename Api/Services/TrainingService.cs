@@ -5,6 +5,7 @@ using AutoMapper;
 using TrainingLogger.API.Data;
 using TrainingLogger.Data;
 using TrainingLogger.Dtos;
+using TrainingLogger.Exceptions;
 using TrainingLogger.Models;
 
 namespace TrainingLogger.Services
@@ -58,6 +59,18 @@ namespace TrainingLogger.Services
                 trainingToCreate.Exercises.Add(exerciseToCreate);
             }
             _repoTraining.Add(trainingToCreate);
+            return await _repoTraining.SaveAll();
+        }
+
+        public async Task<bool> Delete(int trainingId, int userId)
+        {
+            var training = await _repoTraining.GetById(trainingId, userId);
+            if (training == null)
+            {
+                throw new MissingEntityException($"Training does not exists in database. Training id: ${trainingId}");
+            }
+
+            _repoTraining.Delete(training);
             return await _repoTraining.SaveAll();
         }
 

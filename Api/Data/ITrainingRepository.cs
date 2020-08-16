@@ -9,5 +9,6 @@ namespace TrainingLogger.Data
     {
         Task<IEnumerable<Training>> GetAllByUserId(int userId);
         Task<IEnumerable<string>> GetAllTrainingNames(int userId);
+        Task<Training> GetById(int trainingId, int userId);
     }
 }

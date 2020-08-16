@@ -70,6 +70,29 @@ namespace TrainingLogger.Data
                 .ToListAsync();
         }
 
+        public async Task<Training> GetById(int trainingId, int userId)
+        {
+            return await _context.Trainings
+                .Where(t => t.User.Id == userId && t.Id == trainingId)
+                .Include(training => training.User)
+
+                .Include(training => training.Exercises)
+                .ThenInclude(exercise => exercise.Trainig)
+
+                .Include(training => training.Exercises)
+                .ThenInclude(exercise => exercise.Exercise)
+
+                .Include(training => training.Exercises)
+                .ThenInclude(exercise => exercise.Sets)
+                .ThenInclude(set => set.Exercise)
+
+                .Include(training => training.Exercises)
+                .ThenInclude(exercise => exercise.Sets)
+                .ThenInclude(set => set.Unit)
+                
+                .FirstOrDefaultAsync();                
+        }
+
         public async Task<bool> SaveAll()
         {
             return await _context.SaveChangesAsync() > 0;

@@ -70,5 +70,20 @@ namespace TrainingLogger.Controllers
             }
         }
 
+        [HttpDelete("delete/{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                var userId = GetUserId();
+                var result = await _service.Delete(id, userId);
+                return StatusCode(204);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.Message);
+                return BadRequest("Delete training error.");
+            }
+        }
     }
 }

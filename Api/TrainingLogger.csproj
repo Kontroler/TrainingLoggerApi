@@ -20,6 +20,9 @@
     </Content>  
   </ItemGroup>
   <ItemGroup>
+    <None Remove="traininglogger.db" />
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include="Resources\" />
   </ItemGroup>
 </Project>
