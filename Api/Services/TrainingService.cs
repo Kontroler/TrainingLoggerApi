@@ -89,5 +89,17 @@ namespace TrainingLogger.Services
             var trainingNamesResponseDtos = trainingNames.Select(name => new TrainingNameResponseDto { Name = name });
             return trainingNamesResponseDtos;
         }
+
+        public async Task<TrainingDto> GetById(int trainingId, int userId)
+        {
+            var training = await _repoTraining.GetById(trainingId, userId);
+            var trainingDto = _mapper.Map<TrainingDto>(training);
+            return trainingDto;
+        }
+
+        public Task<bool> Update(TrainingForUpdateRequestDto trainingForUpdateRequestDto, int userId)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

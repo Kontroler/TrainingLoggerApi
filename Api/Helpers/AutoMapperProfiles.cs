@@ -14,7 +14,10 @@ namespace TrainingLogger.API.Helpers
             CreateMap<Unit, UnitDto>();
             CreateMap<TrainingExerciseSet, TrainingExerciseSetDto>();
             CreateMap<TrainingExercise, TrainingExerciseDto>();
+            CreateMap<TrainingExerciseSet, TrainingExerciseSetDto>()
+                .ForMember(dest => dest.Unit, opt => opt.MapFrom(src => src.Unit.Code));
             CreateMap<Training, TrainingDto>();
+
         }
     }
 }

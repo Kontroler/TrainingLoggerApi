@@ -38,6 +38,22 @@ namespace TrainingLogger.Controllers
             }
         }
 
+        [HttpGet("{trainingId}")]
+        public async Task<IActionResult> GetById(int trainingId)
+        {
+            try
+            {
+                var userId = GetUserId();
+                var training = await _service.GetById(trainingId, userId);
+                return Ok(training);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.Message);
+                return BadRequest("Get training by id error.");
+            }
+        }
+
         [HttpGet("names")]
         public async Task<IActionResult> GetAllNames()
         {
